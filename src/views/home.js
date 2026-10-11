@@ -1,4 +1,4 @@
-import churchLogo from '../assets/logo1.png'
+import churchLogo from '../assets/church-logo.png'
 
 import {
   formatToday,
