@@ -1,0 +1,680 @@
+:root {
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  color: #202637;
+  background: #3d3d50;
+
+  --blue: #2d5697;
+  --blue-dark: #173c76;
+
+  --light-blue: #eef3fa;
+
+  --border: #e1e4e9;
+
+  --muted: #687184;
+
+  --background: #ffffff;
+}
+
+
+/* --------------------------------
+   BASIC RESET
+-------------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+
+html,
+body {
+  margin: 0;
+
+  width: 100%;
+  min-width: 320px;
+  min-height: 100%;
+}
+
+
+body {
+  background: #3d3d50;
+}
+
+
+button {
+  font: inherit;
+}
+
+
+button:disabled {
+  opacity: 0.38;
+  cursor: default;
+}
+
+
+#app {
+  min-height: 100vh;
+}
+
+
+/* --------------------------------
+   PHONE / APP SHELL
+-------------------------------- */
+
+.app-shell {
+  width: 100%;
+  max-width: 520px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: white;
+  position: relative;
+  padding-bottom: 72px;
+}
+
+
+.page-content {
+  min-height: calc(100vh - 72px);
+}
+
+
+.page {
+  padding: 28px 20px;
+}
+
+
+/* --------------------------------
+   HEADINGS
+-------------------------------- */
+
+.page-header {
+  margin-bottom: 16px;
+}
+
+
+.page-header h1 {
+  margin: 0;
+
+  color: var(--blue-dark);
+
+  font-size: 2rem;
+}
+
+
+.page-header p {
+  margin: 4px 0 0;
+
+  color: var(--muted);
+
+  font-size: 0.95rem;
+}
+
+
+/* --------------------------------
+   HOME PAGE
+-------------------------------- */
+
+.home-page {
+  text-align: center;
+}
+
+
+
+
+/* --------------------------------
+   CHURCH LOGO
+-------------------------------- */
+.church-logo {
+  width: 175px;
+  margin: 18px auto 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* .church-logo {
+  width: clamp(150px, 45vw, 185px);
+  margin: 18px auto 20px;
+} */
+
+.church-logo img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+
+
+
+
+.home-page h1 {
+  margin: 0;
+
+  color: var(--blue-dark);
+
+  font-size: 2rem;
+}
+
+
+.church-location {
+  margin-top: 5px;
+
+  letter-spacing: 0.18em;
+
+  color: var(--muted);
+}
+
+
+.home-card {
+  margin-top: 26px;
+
+  padding: 22px;
+
+  border-radius: 18px;
+
+  border: 1px solid var(--border);
+
+  background: white;
+
+  text-align: left;
+}
+
+
+.today-card {
+  text-align: center;
+}
+
+
+.today-card strong {
+  display: block;
+
+  margin-top: 7px;
+
+  font-size: 1.2rem;
+}
+
+
+.sunday-card {
+  background: #f3f5f8;
+}
+
+
+.sunday-card h2 {
+  margin: 8px 0;
+
+  font-size: 1.25rem;
+}
+
+
+.eyebrow {
+  color: var(--muted);
+
+  font-size: 0.78rem;
+
+  letter-spacing: 0.14em;
+}
+
+
+/* --------------------------------
+   BUTTONS
+-------------------------------- */
+
+.primary-button,
+.secondary-button {
+  min-height: 46px;
+
+  padding: 10px 16px;
+
+  border-radius: 11px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+.primary-button {
+  border: none;
+
+  background: var(--blue);
+
+  color: white;
+}
+
+
+.secondary-button {
+  border: 1px solid var(--border);
+
+  background: #f5f6f8;
+
+  color: var(--blue-dark);
+}
+
+
+.full-button {
+  width: 100%;
+
+  margin-top: 10px;
+}
+
+
+/* --------------------------------
+   SERVICE PAGE LAYOUT
+-------------------------------- */
+
+.service-page {
+  height: calc(100vh - 72px);
+
+  padding: 24px 20px 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  overflow: hidden;
+}
+
+
+.service-top {
+  flex-shrink: 0;
+}
+
+
+/* --------------------------------
+   THIS WEEK / NEXT WEEK
+-------------------------------- */
+
+.week-toggle {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 3px;
+
+  padding: 4px;
+
+  margin-bottom: 14px;
+
+  border-radius: 13px;
+
+  background: #f0f1f3;
+}
+
+
+.week-toggle button {
+  padding: 12px 7px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: transparent;
+
+  color: var(--muted);
+
+  cursor: pointer;
+}
+
+
+.week-toggle button.active {
+  background: white;
+
+  color: var(--blue-dark);
+
+  font-weight: 700;
+
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+/* --------------------------------
+   BULLETIN SECTION
+-------------------------------- */
+
+.bulletin-section {
+  flex: 1;
+
+  min-height: 0;
+
+  padding-top: 14px;
+
+  border-top: 1px solid var(--border);
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+.section-heading {
+  flex-shrink: 0;
+
+  padding: 12px 14px;
+
+  border-radius: 11px;
+
+  background: var(--blue);
+
+  color: white;
+}
+
+
+.section-heading h2 {
+  margin: 0;
+
+  font-size: 1rem;
+}
+
+
+/* --------------------------------
+   SCROLLING CONTENT AREA
+-------------------------------- */
+
+.section-content {
+  flex: 1;
+
+  min-height: 0;
+
+  margin-top: 12px;
+
+  padding-right: 5px;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+}
+
+
+/* --------------------------------
+   LABEL / VALUE LIST
+-------------------------------- */
+
+.bulletin-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+
+.bulletin-row {
+  display: grid;
+
+  grid-template-columns:
+    auto
+    minmax(20px, 1fr)
+    minmax(90px, auto);
+
+  gap: 7px;
+
+  align-items: end;
+
+  line-height: 1.35;
+}
+
+
+.bulletin-label {
+  min-width: 0;
+}
+
+
+.leader {
+  border-bottom: 2px dotted #b8bec8;
+
+  transform: translateY(-4px);
+}
+
+
+.bulletin-value {
+  max-width: 170px;
+
+  text-align: right;
+
+  font-weight: 600;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* --------------------------------
+   NOTE
+-------------------------------- */
+
+.note {
+  padding-top: 10px;
+
+  line-height: 1.65;
+
+  white-space: pre-line;
+}
+
+
+/* --------------------------------
+   NUMBERED LIST
+-------------------------------- */
+
+.numbered-list {
+  margin: 0;
+
+  padding: 10px 0 0 28px;
+}
+
+
+.numbered-list li {
+  margin-bottom: 12px;
+
+  line-height: 1.55;
+}
+
+
+/* --------------------------------
+   SERVICE BOTTOM NAVIGATION
+-------------------------------- */
+
+.service-navigation {
+  flex-shrink: 0;
+
+  display: grid;
+
+  grid-template-columns: 1fr auto 1fr;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 10px 0;
+
+  margin-top: 8px;
+
+  border-top: 1px solid var(--border);
+
+  background: white;
+}
+
+
+.service-progress {
+  min-width: 90px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+}
+
+
+.service-progress strong {
+  color: var(--blue-dark);
+
+  font-size: 0.9rem;
+}
+
+
+.service-progress span {
+  max-width: 120px;
+
+  margin-top: 2px;
+
+  color: var(--muted);
+
+  font-size: 0.7rem;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.service-nav-button {
+  width: 100%;
+
+  min-height: 44px;
+}
+
+
+/* --------------------------------
+   PLACEHOLDERS
+-------------------------------- */
+
+.placeholder-card,
+.empty-message {
+  padding: 24px;
+
+  border-radius: 16px;
+
+  background: #f3f5f8;
+
+  color: var(--muted);
+}
+
+
+/* --------------------------------
+   BOTTOM APP NAV
+-------------------------------- */
+
+.bottom-nav {
+  position: fixed;
+
+  left: 50%;
+
+  bottom: 0;
+
+  transform: translateX(-50%);
+
+  width: min(520px, 100%);
+
+  height: 72px;
+
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  align-items: center;
+
+  border-top: 1px solid var(--border);
+
+  background: white;
+
+  z-index: 20;
+}
+
+
+.nav-button {
+  height: 100%;
+
+  border: none;
+
+  background: transparent;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 3px;
+
+  color: #687184;
+
+  font-size: 0.72rem;
+
+  cursor: pointer;
+}
+
+
+.nav-button.active {
+  color: var(--blue-dark);
+
+  font-weight: 700;
+}
+
+
+.nav-icon {
+  font-size: 1.35rem;
+}
+
+
+/* --------------------------------
+   ERROR
+-------------------------------- */
+
+.error-message {
+  padding: 30px;
+
+  text-align: center;
+
+  color: #a22;
+}
+
+
+/* --------------------------------
+   SMALL PHONE
+-------------------------------- */
+
+@media (max-width: 390px) {
+
+  .service-page {
+    padding-left: 16px;
+
+    padding-right: 16px;
+  }
+
+
+  .bulletin-row {
+    grid-template-columns:
+      auto
+      minmax(10px, 1fr)
+      minmax(78px, auto);
+  }
+
+
+  .bulletin-value {
+    max-width: 125px;
+  }
+
+
+  .service-navigation {
+    gap: 8px;
+  }
+
+
+  .service-progress {
+    min-width: 75px;
+  }
+}
