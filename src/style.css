@@ -271,13 +271,9 @@ button:disabled {
 
 .service-page {
   height: calc(100vh - 72px);
-
   padding: 24px 20px 0;
-
   display: flex;
-
   flex-direction: column;
-
   overflow: hidden;
 }
 
@@ -379,15 +375,10 @@ button:disabled {
 
 .section-content {
   flex: 1;
-
   min-height: 0;
-
   margin-top: 12px;
-
   padding-right: 5px;
-
-  overflow-y: auto;
-
+  overflow-y: auto; 
   overflow-x: hidden;
 }
 
@@ -676,5 +667,241 @@ button:disabled {
 
   .service-progress {
     min-width: 75px;
+  }
+}
+
+
+
+
+
+
+/* --------------------------------
+   SERVICE PAGE — IMPROVED SCROLLING
+
+
+   Update code to overide the previous styles and allow the page to scroll naturally, while keeping the section title visible and the navigation fixed at the bottom.
+-------------------------------- */
+
+/* Allow the whole page to scroll naturally. */
+.service-page {
+  height: auto;
+  min-height: calc(100dvh - 72px);
+
+  overflow: visible;
+
+  /* Keep the final content above fixed controls. */
+  padding-bottom: 110px;
+}
+
+
+/* Allow bulletin content to determine its height. */
+.bulletin-section {
+  flex: 1 0 auto;
+  min-height: auto;
+}
+
+
+/* Keep the section title visible while reading. */
+.section-heading {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+
+/* Remove the internal scrollbar completely. */
+.section-content {
+  flex: 0 0 auto;
+
+  min-height: auto;
+
+  overflow: visible;
+
+  padding-right: 0;
+}
+
+
+/* --------------------------------
+   SERVICE NAVIGATION — FIXED
+-------------------------------- */
+
+.service-navigation {
+  position: fixed;
+
+  left: 50%;
+  bottom: 72px;
+
+  transform: translateX(-50%);
+
+  width: min(520px, 100%);
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto
+    minmax(0, 1fr);
+
+  margin-top: 0;
+  padding: 12px 20px;
+
+  background: #ffffff;
+
+  border-top: 1px solid var(--border);
+
+  box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.04);
+
+  z-index: 19;
+}
+
+
+/* --------------------------------
+   SERVICE NAVIGATION BUTTONS
+-------------------------------- */
+
+.service-nav-button {
+  min-height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  border-radius: 11px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+
+/* Back button */
+.service-back {
+  background: #ffffff;
+
+  color: var(--blue-dark);
+
+  border: 1px solid var(--border);
+}
+
+
+/* Next button */
+.service-next {
+  background: var(--blue);
+
+  color: white;
+
+  border: 1px solid var(--blue);
+}
+
+
+/* Disabled buttons */
+.service-nav-button:disabled {
+  opacity: 0.38;
+
+  cursor: default;
+}
+
+
+/* --------------------------------
+   SMALL SCREEN ADJUSTMENTS
+-------------------------------- */
+
+@media (max-width: 390px) {
+  .service-navigation {
+    padding: 10px 16px;
+    gap: 8px;
+  }
+
+  .service-nav-button {
+    min-height: 48px;
+    font-size: 0.9rem;
+  }
+
+  .service-progress {
+    min-width: 70px;
+  }
+}
+
+
+
+
+
+/* --------------------------------
+   HOME — QUOTE OF THE YEAR
+-------------------------------- */
+
+.quote-card {
+  background: #f3f5f8;
+
+  text-align: center;
+
+  padding: 30px 24px;
+
+  border-radius: 18px;
+}
+
+
+/* Quote paragraph */
+.quote-text {
+  margin: 22px 0 16px;
+
+  color: var(--blue-dark);
+
+  font-size: 1.2rem;
+
+  font-weight: 500;
+
+  line-height: 1.75;
+
+  white-space: pre-line;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* Scripture reference */
+.quote-reference {
+  margin: 14px 0 0;
+
+  color: var(--muted);
+
+  font-size: 0.95rem;
+
+  font-weight: 600;
+}
+
+
+/* Missing quote message */
+.quote-placeholder {
+  margin: 20px 0 0;
+
+  color: var(--muted);
+
+  line-height: 1.6;
+}
+
+
+/* Bulletin access button */
+.home-bulletin-button {
+  margin-top: 24px;
+
+  min-height: 54px;
+
+  font-size: 1.05rem;
+}
+
+
+/* Smaller phones */
+@media (max-width: 390px) {
+  .quote-card {
+    padding: 24px 18px;
+  }
+
+  .quote-text {
+    font-size: 1.1rem;
   }
 }

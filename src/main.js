@@ -1,6 +1,6 @@
 import './style.css'
 
-import {getUpcomingBulletins} from './sanity.js'
+import {getUpcomingBulletins, getChurchSettings} from './sanity.js'
 
 import {
   renderBottomNav,
@@ -20,6 +20,7 @@ const app = document.querySelector('#app')
 
 const state = {
   bulletins: [],
+  churchSettings: null,
   currentTab: 'home',
   selectedBulletinIndex: 0,
   currentSectionIndex: 0,
@@ -29,11 +30,18 @@ const state = {
 // LOAD DATA
 // --------------------------------------------------
 
+
 async function startApp() {
   try {
-    // The Sanity module now calculates the
-    // two correct Sunday dates automatically.
-    state.bulletins = await getUpcomingBulletins()
+    // Retrieve bulletins and Church Settings
+    // from Sanity at the same time.
+    const [bulletins, churchSettings] = await Promise.all([
+      getUpcomingBulletins(),
+      getChurchSettings(),
+    ])
+
+    state.bulletins = bulletins
+    state.churchSettings = churchSettings
 
     renderApp()
   } catch (error) {
@@ -41,11 +49,12 @@ async function startApp() {
 
     app.innerHTML = `
       <div class="error-message">
-        Unable to load the bulletin.
+        Unable to load the church website.
       </div>
     `
   }
 }
+
 
 // --------------------------------------------------
 // MAIN RENDER
@@ -83,6 +92,7 @@ function renderCurrentPage() {
       renderHome(
         container,
         state.bulletins,
+        state.churchSettings,
         handleViewBulletin,
       )
       break
@@ -132,6 +142,7 @@ function handleViewBulletin() {
   state.currentSectionIndex = 0
 
   renderApp()
+  window.scrollTo(0, 0)
 }
 
 // --------------------------------------------------
@@ -152,6 +163,7 @@ function handleSelectBulletin(index) {
   state.currentSectionIndex = 0
 
   renderApp()
+  window.scrollTo(0, 0)
 }
 
 // --------------------------------------------------
@@ -163,8 +175,11 @@ function handlePreviousSection() {
     state.currentSectionIndex--
 
     renderApp()
+    window.scrollTo(0, 0)
   }
 }
+
+
 
 function handleNextSection() {
   const bulletin =
@@ -180,6 +195,7 @@ function handleNextSection() {
     state.currentSectionIndex++
 
     renderApp()
+    window.scrollTo(0, 0)  //everytime you switch to the next section, it will scroll to the top of the page so that the user can see the title of the section and not have to scroll up to see it.
   }
 }
 

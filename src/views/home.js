@@ -1,17 +1,27 @@
 
 import churchLogo from '../assets/church-logo.png'
 
-import {
-  formatToday,
-  formatBulletinDate,
-} from '../utils/formatDate.js'
+import {formatToday} from '../utils/formatDate.js'
+import {escapeHtml} from '../utils/escapeHtml.js'
 
-export function renderHome(container, bulletins, onViewBulletin) {
-  const bulletin = bulletins[0] ?? null
+// --------------------------------------------------
+// HOME PAGE
+// --------------------------------------------------
+
+export function renderHome(
+  container,
+  bulletins,
+  churchSettings,
+  onViewBulletin,
+) {
+  const quote = churchSettings?.quoteText?.trim()
+  const year = churchSettings?.quoteYear
+  const reference = churchSettings?.quoteReference?.trim()
 
   container.innerHTML = `
     <div class="page home-page">
 
+      <!-- CHURCH LOGO -->
       <div class="church-logo">
         <img
           src="${churchLogo}"
@@ -19,6 +29,7 @@ export function renderHome(container, bulletins, onViewBulletin) {
         >
       </div>
 
+      <!-- CHURCH NAME -->
       <h1>
         Chin Immanuel Church
       </h1>
@@ -27,6 +38,7 @@ export function renderHome(container, bulletins, onViewBulletin) {
         NELSON · NEW ZEALAND
       </p>
 
+      <!-- TODAY -->
       <div class="home-card today-card">
 
         <span class="eyebrow">
@@ -39,44 +51,55 @@ export function renderHome(container, bulletins, onViewBulletin) {
 
       </div>
 
-      ${
-        bulletin
-          ? `
-            <div class="home-card sunday-card">
+      <!-- QUOTE OF THE YEAR -->
+      <div class="home-card quote-card">
 
-              <span class="eyebrow">
-                THIS SUNDAY
-              </span>
+        <span class="eyebrow">
+          QUOTE OF THE YEAR
+          ${year ? `· ${escapeHtml(String(year))}` : ''}
+        </span>
 
-              <h2>
-                ${formatBulletinDate(bulletin.date)} · 1:00 PM
-              </h2>
+        ${
+          quote
+            ? `
+              <blockquote class="quote-text">
+                ${escapeHtml(quote)}
+              </blockquote>
 
-              <p>
-                Nelson, New Zealand
+              ${
+                reference
+                  ? `
+                    <p class="quote-reference">
+                      ${escapeHtml(reference)}
+                    </p>
+                  `
+                  : ''
+              }
+            `
+            : `
+              <p class="quote-placeholder">
+                The Quote of the Year
+                has not been published yet.
               </p>
+            `
+        }
 
-              <button
-                id="view-bulletin"
-                class="primary-button full-button"
-              >
-                View this week's bulletin
-              </button>
+      </div>
 
-            </div>
-          `
-          : `
-            <div class="home-card">
-
-              This Sunday's bulletin
-              has not been published yet.
-
-            </div>
-          `
-      }
+      <!-- BULLETIN BUTTON -->
+      <button
+        id="view-bulletin"
+        class="primary-button full-button home-bulletin-button"
+      >
+        View Sunday Bulletin
+      </button>
 
     </div>
   `
+
+  // --------------------------------------------------
+  // EVENT LISTENERS
+  // --------------------------------------------------
 
   container
     .querySelector('#view-bulletin')

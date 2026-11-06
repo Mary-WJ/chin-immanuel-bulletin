@@ -57,3 +57,25 @@ export async function getUpcomingBulletins() {
     nextWeekBulletin,
   ]
 }
+
+
+
+
+/* --------------------------------
+   CHURCH SETTINGS
+-------------------------------- */
+
+export async function getChurchSettings() {
+  const query = `
+    *[
+      _type == "churchSettings" &&
+      _id == "churchSettings"
+    ][0] {
+      quoteYear,
+      quoteText,
+      quoteReference
+    }
+  `
+
+  return client.fetch(query)
+}
