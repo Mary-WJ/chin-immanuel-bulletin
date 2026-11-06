@@ -12,11 +12,11 @@ import {renderService} from './views/service.js'
 import {renderEvents} from './views/events.js'
 import {renderContact} from './views/contact.js'
 
-import {getLocalDateString} from './utils/formatDate.js'
-
-
 const app = document.querySelector('#app')
 
+// --------------------------------------------------
+// APPLICATION STATE
+// --------------------------------------------------
 
 const state = {
   bulletins: [],
@@ -25,16 +25,15 @@ const state = {
   currentSectionIndex: 0,
 }
 
-
 // --------------------------------------------------
 // LOAD DATA
 // --------------------------------------------------
 
 async function startApp() {
   try {
-    const today = getLocalDateString()
-
-    state.bulletins = await getUpcomingBulletins(today)
+    // The Sanity module now calculates the
+    // two correct Sunday dates automatically.
+    state.bulletins = await getUpcomingBulletins()
 
     renderApp()
   } catch (error) {
@@ -47,7 +46,6 @@ async function startApp() {
     `
   }
 }
-
 
 // --------------------------------------------------
 // MAIN RENDER
@@ -72,25 +70,22 @@ function renderApp() {
   renderCurrentPage()
 }
 
-
 // --------------------------------------------------
 // PAGE ROUTING
 // --------------------------------------------------
 
 function renderCurrentPage() {
-  const container = document.querySelector('#page-content')
+  const container =
+    document.querySelector('#page-content')
 
   switch (state.currentTab) {
-
     case 'home':
       renderHome(
         container,
         state.bulletins,
         handleViewBulletin,
       )
-
       break
-
 
     case 'service':
       renderService(container, {
@@ -109,23 +104,17 @@ function renderCurrentPage() {
         onNextSection:
           handleNextSection,
       })
-
       break
-
 
     case 'events':
       renderEvents(container)
-
       break
-
 
     case 'contact':
       renderContact(container)
-
       break
   }
 }
-
 
 // --------------------------------------------------
 // NAVIGATION
@@ -137,33 +126,36 @@ function handleNavigate(tab) {
   renderApp()
 }
 
-
 function handleViewBulletin() {
   state.currentTab = 'service'
-
   state.selectedBulletinIndex = 0
-
   state.currentSectionIndex = 0
 
   renderApp()
 }
 
-
 // --------------------------------------------------
-// BULLETIN WEEK
+// BULLETIN WEEK NAVIGATION
 // --------------------------------------------------
 
 function handleSelectBulletin(index) {
+  // Only the two supported week positions
+  // can be selected.
+  if (index !== 0 && index !== 1) {
+    return
+  }
+
   state.selectedBulletinIndex = index
 
+  // Start from the first section when
+  // switching between bulletins.
   state.currentSectionIndex = 0
 
   renderApp()
 }
 
-
 // --------------------------------------------------
-// BULLETIN SECTIONS
+// BULLETIN SECTION NAVIGATION
 // --------------------------------------------------
 
 function handlePreviousSection() {
@@ -173,7 +165,6 @@ function handlePreviousSection() {
     renderApp()
   }
 }
-
 
 function handleNextSection() {
   const bulletin =
@@ -191,7 +182,6 @@ function handleNextSection() {
     renderApp()
   }
 }
-
 
 // --------------------------------------------------
 // START

@@ -1,18 +1,27 @@
+
 import {createClient} from '@sanity/client'
+import {getSundayDates} from './utils/getSundayDates.js'
 
 export const client = createClient({
   projectId: 'pb4w96ze',
   dataset: 'production',
   apiVersion: '2026-10-06',
-  useCdn: false // `false` if you want to ensure fresh data
+  useCdn: false,
 })
 
-export async function getUpcomingBulletins(today) {
+// --------------------------------------------------
+// GET THIS WEEK AND NEXT WEEK BULLETINS
+// --------------------------------------------------
+
+export async function getUpcomingBulletins() {
+  const {thisSunday, nextSunday} = getSundayDates()
+
+  // Only retrieve bulletins matching these two Sundays.
   const query = `
     *[
       _type == "bulletin" &&
-      date >= $today
-    ] | order(date asc)[0...2] {
+      date in $dates
+    ] | order(_updatedAt desc) {
       date,
       sections[]{
         title,
@@ -27,5 +36,24 @@ export async function getUpcomingBulletins(today) {
     }
   `
 
-  return client.fetch(query, {today})
+  const documents = await client.fetch(query, {
+    dates: [thisSunday, nextSunday],
+  })
+
+  // Preserve each week's position.
+  // A missing bulletin is represented by null.
+  const thisWeekBulletin =
+    documents.find(
+      (bulletin) => bulletin.date === thisSunday
+    ) ?? null
+
+  const nextWeekBulletin =
+    documents.find(
+      (bulletin) => bulletin.date === nextSunday
+    ) ?? null
+
+  return [
+    thisWeekBulletin,
+    nextWeekBulletin,
+  ]
 }

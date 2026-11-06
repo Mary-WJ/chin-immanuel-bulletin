@@ -1,5 +1,6 @@
 import {renderSection} from '../renderers/sectionRenderers.js'
 import {formatBulletinDate} from '../utils/formatDate.js'
+import {getSundayDates} from '../utils/getSundayDates.js'
 import {escapeHtml} from '../utils/escapeHtml.js'
 
 export function renderService(
@@ -13,29 +14,27 @@ export function renderService(
     onNextSection,
   },
 ) {
-  if (!bulletins.length) {
-    container.innerHTML = `
-      <div class="page">
+  // --------------------------------------------------
+  // SELECT THE CORRECT WEEK
+  // --------------------------------------------------
 
-        <h1>
-          Service
-        </h1>
+  const {thisSunday, nextSunday} = getSundayDates()
 
-        <p>
-          No upcoming bulletin has been published.
-        </p>
+  const selectedDate =
+    selectedBulletinIndex === 0
+      ? thisSunday
+      : nextSunday
 
-      </div>
-    `
+  const bulletin =
+    bulletins[selectedBulletinIndex] ?? null
 
-    return
-  }
-
-  const bulletin = bulletins[selectedBulletinIndex]
-
-  const sections = bulletin.sections || []
+  const sections = bulletin?.sections ?? []
 
   const section = sections[currentSectionIndex]
+
+  // --------------------------------------------------
+  // RENDER SERVICE PAGE
+  // --------------------------------------------------
 
   container.innerHTML = `
     <div class="service-page">
@@ -49,26 +48,31 @@ export function renderService(
           </h1>
 
           <p>
-            ${formatBulletinDate(bulletin.date)} · 1:00 PM
+            ${formatBulletinDate(selectedDate)} · 1:00 PM
           </p>
 
         </header>
-
 
         <div class="week-toggle">
 
           <button
             id="this-week"
-            class="${selectedBulletinIndex === 0 ? 'active' : ''}"
+            class="${
+              selectedBulletinIndex === 0
+                ? 'active'
+                : ''
+            }"
           >
             This week · Tu zarh
           </button>
 
-
           <button
             id="next-week"
-            class="${selectedBulletinIndex === 1 ? 'active' : ''}"
-            ${bulletins.length < 2 ? 'disabled' : ''}
+            class="${
+              selectedBulletinIndex === 1
+                ? 'active'
+                : ''
+            }"
           >
             Next week · Hmaizarh
           </button>
@@ -77,97 +81,118 @@ export function renderService(
 
       </div>
 
-
       ${
-        section
+        !bulletin
           ? `
-            <section class="bulletin-section">
-
-              <div class="section-heading">
-
-                <h2>
-                  ${escapeHtml(section.title)}
-                </h2>
-
-              </div>
-
-
-              <div class="section-content">
-
-                ${renderSection(section)}
-
-              </div>
-
-            </section>
-
-
-            <div class="service-navigation">
-
-              <button
-                id="previous-section"
-                class="service-nav-button service-back"
-                ${currentSectionIndex === 0 ? 'disabled' : ''}
-              >
-                ‹ Back
-              </button>
-
-
-              <div class="service-progress">
-
-                <strong>
-                  ${currentSectionIndex + 1} of ${sections.length}
-                </strong>
-
-                <span>
-                  ${escapeHtml(section.title)}
-                </span>
-
-              </div>
-
-
-              <button
-                id="next-section"
-                class="service-nav-button service-next"
-                ${
-                  currentSectionIndex === sections.length - 1
-                    ? 'disabled'
-                    : ''
-                }
-              >
-                Next ›
-              </button>
-
-            </div>
-          `
-          : `
             <div class="empty-message">
-              This bulletin has no sections.
+
+              <p>
+                ${
+                  selectedBulletinIndex === 0
+                    ? "This Sunday's bulletin has not been published yet."
+                    : "Next Sunday's bulletin has not been published yet."
+                }
+              </p>
+
             </div>
           `
+          : section
+            ? `
+              <section class="bulletin-section">
+
+                <div class="section-heading">
+
+                  <h2>
+                    ${escapeHtml(section.title)}
+                  </h2>
+
+                </div>
+
+                <div class="section-content">
+
+                  ${renderSection(section)}
+
+                </div>
+
+              </section>
+
+              <div class="service-navigation">
+
+                <button
+                  id="previous-section"
+                  class="service-nav-button service-back"
+                  ${
+                    currentSectionIndex === 0
+                      ? 'disabled'
+                      : ''
+                  }
+                >
+                  ‹ Back
+                </button>
+
+                <div class="service-progress">
+
+                  <strong>
+                    ${currentSectionIndex + 1}
+                    of
+                    ${sections.length}
+                  </strong>
+
+                  <span>
+                    ${escapeHtml(section.title)}
+                  </span>
+
+                </div>
+
+                <button
+                  id="next-section"
+                  class="service-nav-button service-next"
+                  ${
+                    currentSectionIndex === sections.length - 1
+                      ? 'disabled'
+                      : ''
+                  }
+                >
+                  Next ›
+                </button>
+
+              </div>
+            `
+            : `
+              <div class="empty-message">
+                This bulletin has no sections.
+              </div>
+            `
       }
 
     </div>
   `
 
-  document
+  // --------------------------------------------------
+  // WEEK NAVIGATION
+  // --------------------------------------------------
+
+  container
     .querySelector('#this-week')
     ?.addEventListener('click', () => {
       onSelectBulletin(0)
     })
 
-  document
+  container
     .querySelector('#next-week')
     ?.addEventListener('click', () => {
-      if (bulletins.length >= 2) {
-        onSelectBulletin(1)
-      }
+      onSelectBulletin(1)
     })
 
-  document
+  // --------------------------------------------------
+  // SECTION NAVIGATION
+  // --------------------------------------------------
+
+  container
     .querySelector('#previous-section')
     ?.addEventListener('click', onPreviousSection)
 
-  document
+  container
     .querySelector('#next-section')
     ?.addEventListener('click', onNextSection)
 }

@@ -1,3 +1,4 @@
+
 import churchLogo from '../assets/church-logo.png'
 
 import {
@@ -6,13 +7,16 @@ import {
 } from '../utils/formatDate.js'
 
 export function renderHome(container, bulletins, onViewBulletin) {
-  const bulletin = bulletins[0]
+  const bulletin = bulletins[0] ?? null
 
   container.innerHTML = `
     <div class="page home-page">
 
       <div class="church-logo">
-          <img src="${churchLogo}" alt="Chin Immanuel Church logo">
+        <img
+          src="${churchLogo}"
+          alt="Chin Immanuel Church logo"
+        >
       </div>
 
       <h1>
@@ -63,7 +67,10 @@ export function renderHome(container, bulletins, onViewBulletin) {
           `
           : `
             <div class="home-card">
-              No upcoming bulletin has been published yet.
+
+              This Sunday's bulletin
+              has not been published yet.
+
             </div>
           `
       }
@@ -71,7 +78,7 @@ export function renderHome(container, bulletins, onViewBulletin) {
     </div>
   `
 
-  document
+  container
     .querySelector('#view-bulletin')
     ?.addEventListener('click', onViewBulletin)
 }
