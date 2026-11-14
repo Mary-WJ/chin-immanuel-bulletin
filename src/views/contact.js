@@ -63,7 +63,6 @@ export function renderContact(container, settings = {}) {
               ? `
                 <div class="contact-map-offline" role="status">
                   Connect to the internet to view the map.
-                  Your church address is listed below.
                 </div>
               `
               : `
