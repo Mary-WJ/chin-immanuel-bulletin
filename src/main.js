@@ -1,6 +1,6 @@
 import './style.css'
 
-import {getUpcomingBulletins, getChurchSettings} from './sanity.js'
+import {getUpcomingBulletins, getChurchSettings, getUpcomingEvents} from './sanity.js'
 
 import {
   renderBottomNav,
@@ -24,6 +24,8 @@ const state = {
   currentTab: 'home',
   selectedBulletinIndex: 0,
   currentSectionIndex: 0,
+  events: [],
+  eventsError: false,
 }
 
 // --------------------------------------------------
@@ -33,15 +35,25 @@ const state = {
 
 async function startApp() {
   try {
-    // Retrieve bulletins and Church Settings
-    // from Sanity at the same time.
-    const [bulletins, churchSettings] = await Promise.all([
-      getUpcomingBulletins(),
-      getChurchSettings(),
-    ])
+    const [bulletins, churchSettings, eventsResult] =
+      await Promise.all([
+        getUpcomingBulletins(),
+        getChurchSettings(),
+
+        // An Events failure should not prevent
+        // Home and Service from opening.
+        getUpcomingEvents()
+          .then((events) => ({events, error: false}))
+          .catch((error) => {
+            console.error('Failed to load events:', error)
+            return {events: [], error: true}
+          }),
+      ])
 
     state.bulletins = bulletins
     state.churchSettings = churchSettings
+    state.events = eventsResult.events
+    state.eventsError = eventsResult.error
 
     renderApp()
   } catch (error) {
@@ -117,11 +129,15 @@ function renderCurrentPage() {
       break
 
     case 'events':
-      renderEvents(container)
+      renderEvents(
+        container,
+        state.events,
+        state.eventsError,
+      )
       break
 
     case 'contact':
-      renderContact(container)
+      renderContact(container, state.churchSettings)
       break
   }
 }

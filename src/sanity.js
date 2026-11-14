@@ -73,9 +73,55 @@ export async function getChurchSettings() {
     ][0] {
       quoteYear,
       quoteText,
-      quoteReference
+      quoteReference,
+      address,
+      phone,
+      email,
+      facebookUrl
     }
   `
 
   return client.fetch(query)
+}
+
+
+
+// --------------------------------------------------
+// UPCOMING EVENTS — NEW ZEALAND DATES
+// --------------------------------------------------
+
+export async function getUpcomingEvents() {
+  const parts = new Intl.DateTimeFormat('en-NZ', {
+    timeZone: 'Pacific/Auckland',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(new Date())
+
+  const getPart = (type) =>
+    parts.find((part) => part.type === type).value
+
+  const today =
+    `${getPart('year')}-${getPart('month')}-${getPart('day')}`
+
+  const query = `
+    *[
+      _type == "event" &&
+      defined(date) &&
+      date >= $today
+    ] | order(date asc, startTime asc, title asc) {
+      _id,
+      title,
+      date,
+      startTime,
+      location,
+      description
+    }
+  `
+
+  return client.fetch(
+    query,
+    {today},
+    {perspective: 'published'},
+  )
 }
