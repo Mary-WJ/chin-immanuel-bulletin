@@ -15,7 +15,6 @@ export function renderHome(
   onViewBulletin,
 ) {
   const quote = churchSettings?.quoteText?.trim()
-  const year = churchSettings?.quoteYear
   const reference = churchSettings?.quoteReference?.trim()
 
   container.innerHTML = `
@@ -54,17 +53,10 @@ export function renderHome(
       <!-- QUOTE OF THE YEAR -->
       <div class="home-card quote-card">
 
-        <span class="eyebrow">
-          QUOTE OF THE YEAR
-          ${year ? `· ${escapeHtml(String(year))}` : ''}
-        </span>
-
         ${
           quote
             ? `
-              <blockquote class="quote-text">
-                ${escapeHtml(quote)}
-              </blockquote>
+            <blockquote class="quote-text">${escapeHtml(quote)}</blockquote>
 
               ${
                 reference

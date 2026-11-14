@@ -847,7 +847,7 @@ button:disabled {
 
 /* Quote paragraph */
 .quote-text {
-  margin: 22px 0 16px;
+  margin: 0;
 
   color: var(--blue-dark);
 
@@ -855,7 +855,7 @@ button:disabled {
 
   font-weight: 500;
 
-  line-height: 1.75;
+  line-height: 1.5;
 
   white-space: pre-line;
 
