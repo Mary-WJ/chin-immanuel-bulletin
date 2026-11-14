@@ -1,5 +1,5 @@
 
-import churchLogo from '../assets/church-logo.png'
+import churchLogo from '../assets/church-logo.webp'
 
 import {formatToday} from '../utils/formatDate.js'
 import {escapeHtml} from '../utils/escapeHtml.js'
@@ -20,15 +20,15 @@ export function renderHome(
   container.innerHTML = `
     <div class="page home-page">
 
-      <!-- CHURCH LOGO -->
       <div class="church-logo">
         <img
           src="${churchLogo}"
           alt="Chin Immanuel Church logo"
+          width="241"
+          height="225"
         >
       </div>
 
-      <!-- CHURCH NAME -->
       <h1>
         Chin Immanuel Church
       </h1>
