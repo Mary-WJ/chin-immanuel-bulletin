@@ -968,3 +968,25 @@ button:disabled {
 
 
 
+/* For PWA part*/
+.content-notice {
+  margin: 12px 20px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #e8edf4;
+  color: #183b67;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.content-notice button {
+  min-height: 44px;
+  margin-left: 6px;
+  padding: 6px 12px;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}

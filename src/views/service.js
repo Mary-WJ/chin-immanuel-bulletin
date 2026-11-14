@@ -7,6 +7,7 @@ export function renderService(
   container,
   {
     bulletins,
+    bulletinsSource, // new property
     selectedBulletinIndex,
     currentSectionIndex,
     onSelectBulletin,
@@ -88,9 +89,11 @@ export function renderService(
 
               <p>
                 ${
-                  selectedBulletinIndex === 0
-                    ? "This Sunday's bulletin has not been published yet."
-                    : "Next Sunday's bulletin has not been published yet."
+                  bulletinsSource !== 'live'
+                    ? 'No saved bulletin is available for this Sunday. Connect to the internet and reload to check for it.'
+                    : selectedBulletinIndex === 0
+                      ? "This Sunday's bulletin has not been published yet."
+                      : "Next Sunday's bulletin has not been published yet."
                 }
               </p>
 

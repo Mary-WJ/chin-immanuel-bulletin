@@ -1,123 +1,3 @@
-// import '../styles/contact.css'
-// import {escapeHtml} from '../utils/escapeHtml.js'
-
-// export function renderContact(container, settings = {}) {
-//   const address = settings?.address?.trim()
-//   const phone = settings?.phone?.trim()
-//   const email = settings?.email?.trim()
-//   const facebookUrl = safeWebUrl(settings?.facebookUrl)
-
-//   const dialNumber = phone?.replace(/[^\d+]/g, '')
-//   const hasDetails = address || phone || email || facebookUrl
-
-//   const mapsUrl = address
-//     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`
-//     : ''
-
-//   container.innerHTML = `
-//     <div class="page contact-page">
-//       <header class="page-header">
-//         <h1>Contact</h1>
-//         <p>Find us or get in touch</p>
-//       </header>
-
-//       ${
-//         hasDetails
-//           ? `
-//             <div class="contact-list">
-//               ${
-//                 address
-//                   ? `
-//                     <section class="contact-card">
-//                       <h2>Visit us</h2>
-//                       <p class="contact-address">${escapeHtml(address)}</p>
-//                       <a
-//                         class="contact-link"
-//                         href="${escapeHtml(mapsUrl)}"
-//                         target="_blank"
-//                         rel="noopener noreferrer"
-//                       >Open in Maps ↗</a>
-//                     </section>
-//                   `
-//                   : ''
-//               }
-
-//               ${
-//                 phone
-//                   ? `
-//                     <section class="contact-card">
-//                       <h2>Call us</h2>
-//                       <a
-//                         class="contact-link"
-//                         href="tel:${escapeHtml(dialNumber)}"
-//                       >${escapeHtml(phone)}</a>
-//                     </section>
-//                   `
-//                   : ''
-//               }
-
-//               ${
-//                 email
-//                   ? `
-//                     <section class="contact-card">
-//                       <h2>Email us</h2>
-//                       <a
-//                         class="contact-link"
-//                         href="mailto:${escapeHtml(encodeURIComponent(email))}"
-//                       >${escapeHtml(email)}</a>
-//                     </section>
-//                   `
-//                   : ''
-//               }
-
-//               ${
-//                 facebookUrl
-//                   ? `
-//                     <section class="contact-card">
-//                       <h2>Follow us</h2>
-//                       <p>News and updates from our church.</p>
-//                       <a
-//                         class="contact-link"
-//                         href="${escapeHtml(facebookUrl)}"
-//                         target="_blank"
-//                         rel="noopener noreferrer"
-//                       >Visit our Facebook page ↗</a>
-//                     </section>
-//                   `
-//                   : ''
-//               }
-//             </div>
-//           `
-//           : `
-//             <div class="empty-message">
-//               Contact details will be available soon.
-//             </div>
-//           `
-//       }
-//     </div>
-//   `
-// }
-
-// function safeWebUrl(value) {
-//   if (!value) return ''
-
-//   try {
-//     const url = new URL(value)
-
-//     return ['https:', 'http:'].includes(url.protocol)
-//       ? url.href
-//       : ''
-//   } catch {
-//     return ''
-//   }
-// }
-
-
-
-
-
-
-
 import '../styles/contact.css'
 import {escapeHtml} from '../utils/escapeHtml.js'
 
@@ -177,21 +57,28 @@ export function renderContact(container, settings = {}) {
         <p>Find us or get in touch</p>
       </header>
 
-      ${
-        mapQuery
-          ? `
-            <div class="contact-map">
-              <iframe
-                src="${escapeHtml(mapEmbedUrl(mapQuery))}"
-                title="Map showing where our church is"
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-                allowfullscreen
-              ></iframe>
-            </div>
-          `
-          : ''
-      }
+        ${
+          mapQuery
+            ? navigator.onLine === false
+              ? `
+                <div class="contact-map-offline" role="status">
+                  Connect to the internet to view the map.
+                  Your church address is listed below.
+                </div>
+              `
+              : `
+                <div class="contact-map">
+                  <iframe
+                    src="${escapeHtml(mapEmbedUrl(mapQuery))}"
+                    title="Map showing where our church is"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+              `
+            : ''
+        }
 
       ${
         details.length
